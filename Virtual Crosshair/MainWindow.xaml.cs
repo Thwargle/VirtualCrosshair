@@ -32,6 +32,8 @@ namespace Virtual_Crosshair
             originalImage = Properties.Settings.Default.Image;
             _settingsWindow = new CrosshairSettingsWindow(originalImage);
             RedisplayCrosshair();
+            this.WindowStyle = WindowStyle.None;
+            this.Show();
             InitialDisplayCrosshairSettingsWindow();
         }
         private void InitialDisplayCrosshairSettingsWindow()
@@ -39,16 +41,21 @@ namespace Virtual_Crosshair
             _settingsWindow.OffsetChanged += _settingsWindow_OffsetChanged;
             _settingsWindow.Show();
         }
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            WindowsServices.SetWindowExTransparent(hwnd);
+        }
+        void _settingsWindow_OffsetChanged(CrosshairSettingsWindow.CrosshairSettings setting)
+        {
+            RedisplayCrosshair();
+        }
         private void RedisplayCrosshair()
         {
             SetCurrentImage();
             ScaleTransform();
-            SetupMonitor();
-        }
-
-        void _settingsWindow_OffsetChanged(CrosshairSettingsWindow.CrosshairSettings setting)
-        {
-            RedisplayCrosshair();
+            SetCurrentLocation();
         }
         private void ScaleTransform()
         {
@@ -56,12 +63,17 @@ namespace Virtual_Crosshair
             imgCrosshair.Height = _imageHeight * scaling;
             imgCrosshair.Width = _imageWidth * scaling;
         }
-
-        protected override void OnSourceInitialized(EventArgs e)
+        private void SetCurrentLocation()
         {
-            base.OnSourceInitialized(e);
-            var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
-            WindowsServices.SetWindowExTransparent(hwnd);
+            Rectangle workingArea = GetMonitorWorkingArea();
+
+            double horizontalOffset = _settingsWindow.GetHorizontalOffset();
+            double verticalOffset = _settingsWindow.GetVerticalOffset();
+
+            this.Left = workingArea.Left + horizontalOffset;
+            this.Top = workingArea.Top - verticalOffset;
+            this.Width = workingArea.Width;
+            this.Height = workingArea.Height;
         }
         private void SetCurrentImage()
         {
@@ -97,22 +109,11 @@ namespace Virtual_Crosshair
 
             return assembly.GetManifestResourceStream(resourcePath);
         }
-        public void SetupMonitor()
+        private Rectangle GetMonitorWorkingArea()
         {
             int monitor = GetMonitorIndex();
             System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.AllScreens[monitor];
-
-            double horizontalOffset = _settingsWindow.GetHorizontalOffset();
-            double verticalOffset = _settingsWindow.GetVerticalOffset();
-
-            Rectangle workingArea = screen.WorkingArea;
-            this.Left = workingArea.Left + horizontalOffset;
-            this.Top = workingArea.Top - verticalOffset;
-            this.Width = workingArea.Width;
-            this.Height = workingArea.Height;
-            this.WindowStyle = WindowStyle.None;
-            this.Show();
-
+            return screen.WorkingArea;
         }
         /// <summary>
         ///  Return 0-based monitor from user config
