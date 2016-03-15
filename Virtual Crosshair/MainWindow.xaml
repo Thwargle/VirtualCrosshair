@@ -1,0 +1,8 @@
+﻿<Window x:Name="wndMain" x:Class="Virtual_Crosshair.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="50" Width="50" ResizeMode="NoResize" Topmost="True" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" Foreground="{x:Null}">
+    <Grid x:Name="gridMainGrid">
+        <Image x:Name="imgCrosshair" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+    </Grid>
+</Window>

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Virtual_Crosshair.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Image" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TinyRed.png</Value>
+    </Setting>
+    <Setting Name="Monitor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Primary</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
