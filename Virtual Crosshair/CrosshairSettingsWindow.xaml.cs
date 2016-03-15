@@ -51,6 +51,11 @@ namespace Virtual_Crosshair
             this.Title = string.Format("Virtual Crosshair v{0} Settings", assembly.GetName().Version);
             FireChangeEvent();
         }
+        public string GetCurrentImageName() { return _currentSettings.ImageName; }
+        public double GetCurrentScaling() { return _currentSettings.Scaling; }
+        public double GetHorizontalOffset() { return _currentSettings.HorizontalOffset; }
+        public double GetVerticalOffset() { return _currentSettings.VerticalOffset; }
+
         private void LoadImageChoices()
         {
             var imageNames = GetImageNames();
