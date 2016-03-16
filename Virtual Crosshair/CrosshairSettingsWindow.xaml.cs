@@ -31,31 +31,20 @@ namespace Virtual_Crosshair
             }
         }
         protected List<CrosshairImage> ImageNames = new List<CrosshairImage>();
-        public class CrosshairSettings
-        {
-            public int HorizontalOffset = 0;
-            public int VerticalOffset = 0;
-            public double Scaling = 1.0;
-            public string ImageName;
-        }
-        public delegate void OffsetChangedEventHandler(CrosshairSettings setting);
-        public event OffsetChangedEventHandler OffsetChanged;
-        private CrosshairSettings _currentSettings = new CrosshairSettings();
-        public CrosshairSettingsWindow(string originalImage)
+        public delegate void SettingsChangedEventHandler(CrosshairSettingsModel setting);
+        public event SettingsChangedEventHandler SettingsChanged;
+        private readonly CrosshairSettingsModel _settingsModel;
+        public CrosshairSettingsWindow(string originalImage, CrosshairSettingsModel model)
         {
             InitializeComponent();
             LoadImageChoices();
-            _currentSettings.ImageName = originalImage;
+            _settingsModel = model;
+            _settingsModel.ImageName = originalImage;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             this.Title = string.Format("Virtual Crosshair v{0} Settings", assembly.GetName().Version);
-            FireChangeEvent();
+            FireSettingsChangedEvent();
         }
-        public string GetCurrentImageName() { return _currentSettings.ImageName; }
-        public double GetCurrentScaling() { return _currentSettings.Scaling; }
-        public double GetHorizontalOffset() { return _currentSettings.HorizontalOffset; }
-        public double GetVerticalOffset() { return _currentSettings.VerticalOffset; }
-
         private void LoadImageChoices()
         {
             var imageNames = GetImageNames();
@@ -82,40 +71,43 @@ namespace Virtual_Crosshair
         private void HorizontalOffsetCtl_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (e.NewValue == e.OldValue) { return; }
-            _currentSettings.HorizontalOffset = (int)e.NewValue;
+            _settingsModel.HorizontalOffset = (int)e.NewValue;
             txtHorizontal.Text = HorizontalOffsetCtl.Value.ToString();
-            FireChangeEvent();
+            FireSettingsChangedEvent();
             e.Handled = true;
         }
         private void VerticalOffsetCtl_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (e.NewValue == e.OldValue) { return; }
-            _currentSettings.VerticalOffset = (int)e.NewValue;
+            _settingsModel.VerticalOffset = (int)e.NewValue;
             txtVertical.Text = VerticalOffsetCtl.Value.ToString();
-            FireChangeEvent();
+            FireSettingsChangedEvent();
             e.Handled = true;
         }
 
         private void SizeCtl_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (e.NewValue == e.OldValue) { return; }
-            _currentSettings.Scaling = (40.0 + e.NewValue) / 40.0;
+            _settingsModel.Scaling = (40.0 + e.NewValue) / 40.0;
             txtSize.Text = SizeCtl.Value.ToString();
-            FireChangeEvent();
+            FireSettingsChangedEvent();
             e.Handled = true;
-        }
-        private void FireChangeEvent()
-        {
-            if (OffsetChanged != null)
-            {
-                OffsetChanged(_currentSettings);
-            }
         }
 
         private void ImageChoiceCtl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this._currentSettings.ImageName = this.ImageChoiceCtl.SelectedValue.ToString();
-            FireChangeEvent();
+            string newImageName = this.ImageChoiceCtl.SelectedValue.ToString();
+            if (newImageName == _settingsModel.ImageName) { return; }
+            this._settingsModel.ImageName = newImageName;
+            FireSettingsChangedEvent();
+        }
+
+        private void FireSettingsChangedEvent()
+        {
+            if (SettingsChanged != null)
+            {
+                SettingsChanged(_settingsModel);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -22,6 +22,7 @@ namespace Virtual_Crosshair
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CrosshairSettingsModel _settingsModel = new CrosshairSettingsModel();
         CrosshairSettingsWindow _settingsWindow = null;
         private int _imageHeight;
         private int _imageWidth;
@@ -30,7 +31,7 @@ namespace Virtual_Crosshair
         {
             InitializeComponent();
             originalImage = Properties.Settings.Default.Image;
-            _settingsWindow = new CrosshairSettingsWindow(originalImage);
+            _settingsWindow = new CrosshairSettingsWindow(originalImage, _settingsModel);
             RedisplayCrosshair();
             this.WindowStyle = WindowStyle.None;
             this.Show();
@@ -38,7 +39,7 @@ namespace Virtual_Crosshair
         }
         private void InitialDisplayCrosshairSettingsWindow()
         {
-            _settingsWindow.OffsetChanged += _settingsWindow_OffsetChanged;
+            _settingsWindow.SettingsChanged += SettingsWindowSettingsChanged;
             _settingsWindow.Show();
         }
         protected override void OnSourceInitialized(EventArgs e)
@@ -47,7 +48,7 @@ namespace Virtual_Crosshair
             var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExTransparent(hwnd);
         }
-        void _settingsWindow_OffsetChanged(CrosshairSettingsWindow.CrosshairSettings setting)
+        void SettingsWindowSettingsChanged(CrosshairSettingsModel settings)
         {
             RedisplayCrosshair();
         }
@@ -59,7 +60,7 @@ namespace Virtual_Crosshair
         }
         private void ScaleTransform()
         {
-            double scaling = _settingsWindow.GetCurrentScaling();
+            double scaling = _settingsModel.Scaling;
             imgCrosshair.Height = _imageHeight * scaling;
             imgCrosshair.Width = _imageWidth * scaling;
         }
@@ -67,8 +68,8 @@ namespace Virtual_Crosshair
         {
             Rectangle workingArea = GetMonitorWorkingArea();
 
-            double horizontalOffset = _settingsWindow.GetHorizontalOffset();
-            double verticalOffset = _settingsWindow.GetVerticalOffset();
+            double horizontalOffset = _settingsModel.HorizontalOffset;
+            double verticalOffset = _settingsModel.VerticalOffset;
 
             this.Left = workingArea.Left + horizontalOffset;
             this.Top = workingArea.Top - verticalOffset;
@@ -77,7 +78,7 @@ namespace Virtual_Crosshair
         }
         private void SetCurrentImage()
         {
-            string imageName = _settingsWindow.GetCurrentImageName();
+            string imageName = _settingsModel.ImageName;
 
             string imageDirectory = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\Images\";
             string imageFilepath = Path.Combine(imageDirectory, imageName);

@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CrosshairSettingsModel.cs" />
     <Compile Include="CrosshairSettingsWindow.xaml.cs">
       <DependentUpon>CrosshairSettingsWindow.xaml</DependentUpon>
     </Compile>

@@ -1,3 +1,6 @@
 2016-03-15, Perry & Jonathan
  Upload initial project
  Fixed the offset code so that the crosshair maintains its monitor position
+2016-03-15, Perry
+ Factor settings out of CrosshairSettingsWindow class
+  into CrosshairSettingsModel
