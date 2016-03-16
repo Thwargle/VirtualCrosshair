@@ -26,7 +26,6 @@ namespace Virtual_Crosshair
         CrosshairSettingsWindow _settingsWindow = null;
         private int _imageHeight;
         private int _imageWidth;
-        private string originalImage;
         public MainWindow()
         {
             InitializeComponent();
