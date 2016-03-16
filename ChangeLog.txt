@@ -6,3 +6,4 @@
  Added monitor selection dropdown
  Persist crosshair settings
  Persist settings window placement
+ Hide main window from task bar
