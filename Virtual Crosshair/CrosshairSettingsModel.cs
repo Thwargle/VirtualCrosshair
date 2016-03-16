@@ -7,5 +7,6 @@ namespace Virtual_Crosshair
         public int VerticalOffset = 0;
         public double Scaling = 1.0;
         public string ImageName;
+        public int MonitorIndex = 0;
     }
 }

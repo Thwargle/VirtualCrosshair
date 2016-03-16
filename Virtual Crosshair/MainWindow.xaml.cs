@@ -112,15 +112,24 @@ namespace Virtual_Crosshair
         }
         private Rectangle GetMonitorWorkingArea()
         {
-            int monitor = GetMonitorIndex();
+            int monitor = GetCurrentMonitorIndex();
             System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.AllScreens[monitor];
             return screen.WorkingArea;
+        }
+        private int GetCurrentMonitorIndex()
+        {
+            int index = _settingsModel.MonitorIndex;
+            if (index + 1 > System.Windows.Forms.Screen.AllScreens.Length)
+            {
+                index = 0;
+            }
+            return index;
         }
         /// <summary>
         ///  Return 0-based monitor from user config
         /// </summary>
         /// <returns></returns>
-        private int GetMonitorIndex()
+        private int GetMonitorIndexFromUserSettings()
         {
             if (System.Windows.Forms.Screen.AllScreens.Length == 1) { return 0; }
             string monitorToUse = Properties.Settings.Default.Monitor;

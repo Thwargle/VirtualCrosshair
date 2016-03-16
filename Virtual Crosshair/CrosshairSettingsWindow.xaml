@@ -7,10 +7,12 @@
         <Slider x:Name="VerticalOffsetCtl" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="10,39,0,13" VerticalAlignment="Stretch" Orientation="Vertical" Minimum="-20" Maximum="20" ValueChanged="VerticalOffsetCtl_ValueChanged" SmallChange="1" TickPlacement="BottomRight"/>
         <Slider x:Name="SizeCtl" IsSnapToTickEnabled="True" HorizontalAlignment="Stretch" Margin="132,74,10,0" VerticalAlignment="Top" Maximum="20" Minimum="-20" ValueChanged="SizeCtl_ValueChanged" SmallChange="1" TickPlacement="BottomRight"/>
         <Label x:Name="lblSize" Content="Size" HorizontalAlignment="Left" Margin="96,66,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="MonitorChoiceCtl" HorizontalAlignment="Right" Margin="0,107,87,0" VerticalAlignment="Top" Width="80" SelectionChanged="MonitorChoiceCtl_SelectionChanged"/>
         <ComboBox x:Name="ImageChoiceCtl" HorizontalAlignment="Right" Margin="0,137,35,0" VerticalAlignment="Top" Width="132" SelectionChanged="ImageChoiceCtl_SelectionChanged"/>
         <Label x:Name="lblImage" Content="Image" HorizontalAlignment="Right" Margin="0,133,172,0" VerticalAlignment="Top" Width="44"/>
         <TextBox x:Name="txtHorizontal" HorizontalAlignment="Right" Height="23" Margin="0,39,10,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="46" TextAlignment="Center"/>
         <TextBox x:Name="txtVertical" HorizontalAlignment="Left" Height="23" Margin="39,0,0,13" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" Width="46" TextAlignment="Center"/>
         <TextBox x:Name="txtSize" HorizontalAlignment="Right" Height="23" Margin="0,103,10,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="46" TextAlignment="Center"/>
+        <Label x:Name="lblMonitor" Content="Monit" HorizontalAlignment="Right" Margin="0,103,172,0" VerticalAlignment="Top" Width="44"/>
     </Grid>
 </Window>

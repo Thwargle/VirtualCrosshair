@@ -30,7 +30,16 @@ namespace Virtual_Crosshair
                 return Filename;
             }
         }
+        protected class MonitorChoice
+        {
+            public string MonitorName { get; set; }
+            public override string ToString()
+            {
+                return MonitorName;
+            }
+        }
         protected List<CrosshairImage> ImageNames = new List<CrosshairImage>();
+        protected List<MonitorChoice> MonitorNames = new List<MonitorChoice>();
         public delegate void SettingsChangedEventHandler(CrosshairSettingsModel setting);
         public event SettingsChangedEventHandler SettingsChanged;
         private readonly CrosshairSettingsModel _settingsModel;
@@ -38,6 +47,7 @@ namespace Virtual_Crosshair
         {
             InitializeComponent();
             LoadImageChoices();
+            LoadMonitorChoices();
             _settingsModel = model;
             _settingsModel.ImageName = originalImage;
 
@@ -54,11 +64,20 @@ namespace Virtual_Crosshair
                     new CrosshairImage() { Filename = imageName });
             }
             this.ImageChoiceCtl.ItemsSource = this.ImageNames;
-            
+        }
+        private void LoadMonitorChoices()
+        {
+            var names = GetMonitorNames();
+            foreach (string name in names)
+            {
+                this.MonitorNames.Add(
+                    new MonitorChoice() { MonitorName = name });
+            }
+            this.MonitorChoiceCtl.ItemsSource = this.MonitorNames;
         }
         private List<string> GetImageNames()
         {
-            List<string> imageNames = new List<string>();
+            var imageNames = new List<string>();
             string imagePath = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\Images\";
             foreach (string filepath in System.IO.Directory.EnumerateFiles(imagePath + ""))
             {
@@ -66,6 +85,15 @@ namespace Virtual_Crosshair
                 imageNames.Add(filename);
             }
             return imageNames;
+        }
+        private List<string> GetMonitorNames()
+        {
+            var names = new List<string>();
+            for (int i = 0; i < System.Windows.Forms.Screen.AllScreens.Length; ++i)
+            {
+                names.Add(string.Format("{0}", i + 1));
+            }
+            return names;
         }
 
         private void HorizontalOffsetCtl_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -102,6 +130,15 @@ namespace Virtual_Crosshair
             FireSettingsChangedEvent();
         }
 
+        private void MonitorChoiceCtl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string newMonitorIndexString = this.MonitorChoiceCtl.SelectedValue.ToString();
+            int newMonitorIndex = int.Parse(newMonitorIndexString) - 1;
+            if (newMonitorIndex == _settingsModel.MonitorIndex) { return; }
+            this._settingsModel.MonitorIndex = newMonitorIndex;
+            FireSettingsChangedEvent();
+        }
+
         private void FireSettingsChangedEvent()
         {
             if (SettingsChanged != null)
@@ -114,5 +151,6 @@ namespace Virtual_Crosshair
         {
             Application.Current.Shutdown();
         }
+
     }
 }
