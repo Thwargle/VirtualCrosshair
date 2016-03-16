@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WindowPlacementUtil;
 
 namespace Virtual_Crosshair
 {
@@ -56,6 +57,21 @@ namespace Virtual_Crosshair
             this.Title = string.Format("Virtual Crosshair v{0} Settings", assembly.GetName().Version);
             FireSettingsChangedEvent();
         }
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            LoadWindowSettings();
+        }
+        private void LoadWindowSettings()
+        {
+            this.SetPlacement(Properties.Settings.Default.CrosshairSettingsWindowPlacement);
+        }
+        private void SaveWindowSettings()
+        {
+            Properties.Settings.Default.CrosshairSettingsWindowPlacement = this.GetPlacement();
+            Properties.Settings.Default.Save();
+        }
+
         private void LoadDefaultValues()
         {
             Properties.Settings.Default.Reload();
@@ -170,6 +186,7 @@ namespace Virtual_Crosshair
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            SaveWindowSettings();
             Application.Current.Shutdown();
         }
 

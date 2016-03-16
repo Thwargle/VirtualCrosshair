@@ -30,22 +30,32 @@ namespace Virtual_Crosshair
         public MainWindow()
         {
             InitializeComponent();
+            MigrateSettingsIfNeeded();
             _settingsWindow = new CrosshairSettingsWindow(_settingsModel);
             RedisplayCrosshair();
             this.WindowStyle = WindowStyle.None;
             this.Show();
             InitialDisplayCrosshairSettingsWindow();
         }
-        private void InitialDisplayCrosshairSettingsWindow()
+        private void MigrateSettingsIfNeeded()
         {
-            _settingsWindow.SettingsChanged += SettingsWindowSettingsChanged;
-            _settingsWindow.Show();
+            if (Properties.Settings.Default.NeedsUpgrade)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.NeedsUpgrade = false;
+                Properties.Settings.Default.Save();
+            }
         }
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
             var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExTransparent(hwnd);
+        }
+        private void InitialDisplayCrosshairSettingsWindow()
+        {
+            _settingsWindow.SettingsChanged += SettingsWindowSettingsChanged;
+            _settingsWindow.Show();
         }
         void SettingsWindowSettingsChanged(CrosshairSettingsModel settings)
         {
@@ -130,6 +140,5 @@ namespace Virtual_Crosshair
         {
             return (string.Compare(str1, str2, ignoreCase: true) == 0);
         }
-
     }
 }

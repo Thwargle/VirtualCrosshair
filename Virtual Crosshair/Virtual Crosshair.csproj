@@ -59,7 +59,9 @@
     <Compile Include="CrosshairSettingsWindow.xaml.cs">
       <DependentUpon>CrosshairSettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowPlacer.cs" />
     <Compile Include="WindowsServices.cs" />
+    <Compile Include="WpfWindowPlacer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
