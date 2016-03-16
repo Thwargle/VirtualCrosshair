@@ -4,3 +4,4 @@
  Factor settings out of CrosshairSettingsWindow class
   into CrosshairSettingsModel
  Added monitor selection dropdown
+ Persist crosshair settings

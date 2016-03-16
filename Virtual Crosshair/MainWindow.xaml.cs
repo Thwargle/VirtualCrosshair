@@ -30,8 +30,7 @@ namespace Virtual_Crosshair
         public MainWindow()
         {
             InitializeComponent();
-            originalImage = Properties.Settings.Default.Image;
-            _settingsWindow = new CrosshairSettingsWindow(originalImage, _settingsModel);
+            _settingsWindow = new CrosshairSettingsWindow(_settingsModel);
             RedisplayCrosshair();
             this.WindowStyle = WindowStyle.None;
             this.Show();
@@ -79,10 +78,12 @@ namespace Virtual_Crosshair
         private void SetCurrentImage()
         {
             string imageName = _settingsModel.ImageName;
+            if (string.IsNullOrEmpty(imageName)) { return; }
 
             string imageDirectory = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\Images\";
             string imageFilepath = Path.Combine(imageDirectory, imageName);
 
+            if (!File.Exists(imageFilepath)) { return; }
             MemoryStream ms = new MemoryStream();
             using (FileStream fs = File.OpenRead(imageFilepath))
             {
@@ -124,26 +125,6 @@ namespace Virtual_Crosshair
                 index = 0;
             }
             return index;
-        }
-        /// <summary>
-        ///  Return 0-based monitor from user config
-        /// </summary>
-        /// <returns></returns>
-        private int GetMonitorIndexFromUserSettings()
-        {
-            if (System.Windows.Forms.Screen.AllScreens.Length == 1) { return 0; }
-            string monitorToUse = Properties.Settings.Default.Monitor;
-            if (EqStr(monitorToUse, "Primary")) { monitorToUse = "1"; }
-            if (EqStr(monitorToUse, "Secondary")) { monitorToUse = "2"; }
-            if (EqStr(monitorToUse, "Tertiary")) { monitorToUse = "3"; }
-            int chosen = 0;
-            if (int.TryParse(monitorToUse, out chosen))
-            {
-                chosen = chosen - 1; // convert 1-based to 0-based
-                if (chosen <= System.Windows.Forms.Screen.AllScreens.Length) { return chosen; }
-            }
-            // If fail to parse or monitor does not exist, just give back 0
-            return 0;
         }
         private bool EqStr(string str1, string str2)
         {

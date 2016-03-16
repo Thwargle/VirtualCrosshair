@@ -43,17 +43,34 @@ namespace Virtual_Crosshair
         public delegate void SettingsChangedEventHandler(CrosshairSettingsModel setting);
         public event SettingsChangedEventHandler SettingsChanged;
         private readonly CrosshairSettingsModel _settingsModel;
-        public CrosshairSettingsWindow(string originalImage, CrosshairSettingsModel model)
+        public CrosshairSettingsWindow(CrosshairSettingsModel model)
         {
+            _settingsModel = model;
             InitializeComponent();
             LoadImageChoices();
             LoadMonitorChoices();
-            _settingsModel = model;
-            _settingsModel.ImageName = originalImage;
+
+            LoadDefaultValues();
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             this.Title = string.Format("Virtual Crosshair v{0} Settings", assembly.GetName().Version);
             FireSettingsChangedEvent();
+        }
+        private void LoadDefaultValues()
+        {
+            Properties.Settings.Default.Reload();
+            this.HorizontalOffsetCtl.Value = Properties.Settings.Default.HorizontalOffset;
+            this.VerticalOffsetCtl.Value = Properties.Settings.Default.VerticalOffset;
+            this.SizeCtl.Value = Properties.Settings.Default.Scaling;
+            this.ImageChoiceCtl.SelectedIndex = Properties.Settings.Default.SelectedImageIndex;
+            this.MonitorChoiceCtl.SelectedIndex = Properties.Settings.Default.SelectedMonitorIndex;
+        }
+        private void BindImages()
+        {
+            var binding = new Binding("Image");
+            binding.Source =  Properties.Settings.Default;
+            binding.Mode = BindingMode.TwoWay;
+            BindingOperations.SetBinding(this.ImageChoiceCtl, ComboBox.SelectedValueProperty, binding);
         }
         private void LoadImageChoices()
         {
@@ -100,7 +117,10 @@ namespace Virtual_Crosshair
         {
             if (e.NewValue == e.OldValue) { return; }
             _settingsModel.HorizontalOffset = (int)e.NewValue;
-            txtHorizontal.Text = HorizontalOffsetCtl.Value.ToString();
+            if (txtHorizontal != null)
+            {
+                txtHorizontal.Text = HorizontalOffsetCtl.Value.ToString();
+            }
             FireSettingsChangedEvent();
             e.Handled = true;
         }
@@ -145,6 +165,7 @@ namespace Virtual_Crosshair
             {
                 SettingsChanged(_settingsModel);
             }
+            Properties.Settings.Default.Save();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

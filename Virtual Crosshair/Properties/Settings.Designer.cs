@@ -25,18 +25,6 @@ namespace Virtual_Crosshair.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("TinyRed.png")]
-        public string Image {
-            get {
-                return ((string)(this["Image"]));
-            }
-            set {
-                this["Image"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Primary")]
         public string Monitor {
             get {
@@ -44,6 +32,66 @@ namespace Virtual_Crosshair.Properties {
             }
             set {
                 this["Monitor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SelectedMonitorIndex {
+            get {
+                return ((int)(this["SelectedMonitorIndex"]));
+            }
+            set {
+                this["SelectedMonitorIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SelectedImageIndex {
+            get {
+                return ((int)(this["SelectedImageIndex"]));
+            }
+            set {
+                this["SelectedImageIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int HorizontalOffset {
+            get {
+                return ((int)(this["HorizontalOffset"]));
+            }
+            set {
+                this["HorizontalOffset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int VerticalOffset {
+            get {
+                return ((int)(this["VerticalOffset"]));
+            }
+            set {
+                this["VerticalOffset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Scaling {
+            get {
+                return ((int)(this["Scaling"]));
+            }
+            set {
+                this["Scaling"] = value;
             }
         }
     }

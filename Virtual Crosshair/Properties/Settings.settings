@@ -2,11 +2,23 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Virtual_Crosshair.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Image" Type="System.String" Scope="User">
-      <Value Profile="(Default)">TinyRed.png</Value>
-    </Setting>
     <Setting Name="Monitor" Type="System.String" Scope="User">
       <Value Profile="(Default)">Primary</Value>
+    </Setting>
+    <Setting Name="SelectedMonitorIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SelectedImageIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="HorizontalOffset" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="VerticalOffset" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Scaling" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>
