@@ -62,9 +62,11 @@ namespace Virtual_Crosshair
         }
         private void RedisplayCrosshair()
         {
+            imgCrosshair.Visibility = System.Windows.Visibility.Hidden;
             SetCurrentImage();
             ScaleTransform();
             SetCurrentLocation();
+            imgCrosshair.Visibility = System.Windows.Visibility.Visible;
         }
         private void ScaleTransform()
         {
@@ -83,6 +85,8 @@ namespace Virtual_Crosshair
             this.Top = workingArea.Top - verticalOffset;
             this.Width = workingArea.Width;
             this.Height = workingArea.Height;
+            this.WindowState = System.Windows.WindowState.Normal;
+            this.WindowState = System.Windows.WindowState.Maximized;
         }
         private void SetCurrentImage()
         {

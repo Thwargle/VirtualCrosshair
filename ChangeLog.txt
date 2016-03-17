@@ -12,3 +12,4 @@
 2016-03-16, Perry
  New FilledInRed.png (for testing)
  New redblue.png (for testing)
+ Set main windows to normal then maximized, to fix centering issue
