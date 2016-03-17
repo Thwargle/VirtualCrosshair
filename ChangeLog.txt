@@ -8,3 +8,6 @@
  Persist settings window placement
  Hide main window from task bar
  Fix assembly properties
+
+2016-03-16, Perry
+ New FilledInRed.png (for testing)
