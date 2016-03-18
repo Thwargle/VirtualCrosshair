@@ -18,3 +18,4 @@
 2016-03-18, Perry
  Add horizontal & vertical scaling dropdowns
  Switch to full size canvas, and relocate image itself within canvas
+ Display workarea numbers on label on crosshair settings form

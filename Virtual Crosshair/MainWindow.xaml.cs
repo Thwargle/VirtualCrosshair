@@ -85,6 +85,9 @@ namespace Virtual_Crosshair
             this.Top = workingArea.Top;
             this.Width = workingArea.Width;
             this.Height = workingArea.Height;
+
+            this._settingsWindow.DisplayWorkArea(workingArea);
+
             this.WindowState = System.Windows.WindowState.Normal;
             this.WindowState = System.Windows.WindowState.Maximized;
 
