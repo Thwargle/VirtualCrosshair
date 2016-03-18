@@ -34,6 +34,6 @@
             <ComboBoxItem Content="500"/>
             <ComboBoxItem Content="1000"/>
         </ComboBox>
-        <Label x:Name="lblWorkAreaInfo" Content="(WorkArea)" HorizontalAlignment="Right" Margin="0,229,35,0" VerticalAlignment="Top" Width="169" RenderTransformOrigin="0.682,2.423"/>
+        <Label x:Name="lblWorkAreaInfo" Content="(WorkArea)" HorizontalAlignment="Left" Margin="101,229,0,0" VerticalAlignment="Top" Width="206" RenderTransformOrigin="0.682,2.423"/>
     </Grid>
 </Window>

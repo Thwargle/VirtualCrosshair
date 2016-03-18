@@ -86,7 +86,11 @@ namespace Virtual_Crosshair
             this.Width = workingArea.Width;
             this.Height = workingArea.Height;
 
-            this._settingsWindow.DisplayWorkArea(workingArea);
+            double mainDpi = GetDpiScaling(Application.Current.MainWindow);
+            double settingsDpi = GetDpiScaling(_settingsWindow);
+            string info = string.Format("{0},{1} - {2}x{3}, mdpi:{4}, sdpi:{5}", workingArea.Left, workingArea.Top, workingArea.Width, workingArea.Height, mainDpi, settingsDpi);
+
+            this._settingsWindow.DisplayWorkArea(info);
 
             this.WindowState = System.Windows.WindowState.Normal;
             this.WindowState = System.Windows.WindowState.Maximized;
@@ -95,7 +99,12 @@ namespace Virtual_Crosshair
             Canvas.SetLeft(imgCrosshair, imgLeft);
             double imgTop = ((workingArea.Height - imgCrosshair.Height) / 2.0) - verticalOffset;
             Canvas.SetTop(imgCrosshair, imgTop);
-
+        }
+        private double GetDpiScaling(UIElement elent)
+        {
+            PresentationSource source = PresentationSource.FromVisual(elent);
+            double dpiScaling = (source != null && source.CompositionTarget != null ? source.CompositionTarget.TransformFromDevice.M11 : 1);
+            return dpiScaling;
         }
         private void SetCurrentImage()
         {

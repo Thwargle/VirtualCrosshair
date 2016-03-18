@@ -120,9 +120,9 @@ namespace Virtual_Crosshair
             }
             this.ImageChoiceCtl.ItemsSource = this.ImageNames;
         }
-        public void DisplayWorkArea(System.Drawing.Rectangle workarea)
+        public void DisplayWorkArea(string info)
         {
-            this.lblWorkAreaInfo.Content = string.Format("{0},{1} - {2}x{3}", workarea.Left, workarea.Top, workarea.Width, workarea.Height);
+            this.lblWorkAreaInfo.Content = info;
         }
         private void LoadMonitorChoices()
         {
