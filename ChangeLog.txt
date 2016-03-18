@@ -19,3 +19,5 @@
  Add horizontal & vertical scaling dropdowns
  Switch to full size canvas, and relocate image itself within canvas
  Display workarea numbers on label on crosshair settings form
+ Add flag for monitor change to callback
+ Handle initial monitor properly

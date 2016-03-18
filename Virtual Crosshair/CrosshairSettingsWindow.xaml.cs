@@ -41,7 +41,7 @@ namespace Virtual_Crosshair
         }
         protected List<CrosshairImage> ImageNames = new List<CrosshairImage>();
         protected List<MonitorChoice> MonitorNames = new List<MonitorChoice>();
-        public delegate void SettingsChangedEventHandler(CrosshairSettingsModel setting);
+        public delegate void SettingsChangedEventHandler(CrosshairSettingsModel setting, bool monitorChanged);
         public event SettingsChangedEventHandler SettingsChanged;
         private readonly CrosshairSettingsModel _settingsModel;
         public CrosshairSettingsWindow(CrosshairSettingsModel model)
@@ -55,7 +55,7 @@ namespace Virtual_Crosshair
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             this.Title = string.Format("Virtual Crosshair v{0} Settings", assembly.GetName().Version);
-            FireSettingsChangedEvent();
+            FireSettingsChangedEvent(monitorChanged: true);
         }
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -198,7 +198,7 @@ namespace Virtual_Crosshair
             int newMonitorIndex = int.Parse(newMonitorIndexString) - 1;
             if (newMonitorIndex == _settingsModel.MonitorIndex) { return; }
             this._settingsModel.MonitorIndex = newMonitorIndex;
-            FireSettingsChangedEvent();
+            FireSettingsChangedEvent(monitorChanged: true);
         }
 
         private void cboHorizScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -219,11 +219,11 @@ namespace Virtual_Crosshair
             VerticalOffsetCtl.Maximum = scale;
         }
 
-        private void FireSettingsChangedEvent()
+        private void FireSettingsChangedEvent(bool monitorChanged = false)
         {
             if (SettingsChanged != null)
             {
-                SettingsChanged(_settingsModel);
+                SettingsChanged(_settingsModel, monitorChanged);
             }
             Properties.Settings.Default.Save();
         }

@@ -31,6 +31,7 @@ namespace Virtual_Crosshair
             InitializeComponent();
             MigrateSettingsIfNeeded();
             _settingsWindow = new CrosshairSettingsWindow(_settingsModel);
+            RedisplayMainWindowForMonitorChange();
             RedisplayCrosshair();
             this.WindowStyle = WindowStyle.None;
             this.Show();
@@ -56,9 +57,35 @@ namespace Virtual_Crosshair
             _settingsWindow.SettingsChanged += SettingsWindowSettingsChanged;
             _settingsWindow.Show();
         }
-        void SettingsWindowSettingsChanged(CrosshairSettingsModel settings)
+
+        private void SettingsWindowSettingsChanged(CrosshairSettingsModel settings, bool monitorChanged)
         {
+            if (monitorChanged)
+            {
+                RedisplayMainWindowForMonitorChange();
+            }
             RedisplayCrosshair();
+        }
+        private void RedisplayMainWindowForMonitorChange()
+        {
+            Rectangle workingArea = GetMonitorWorkingArea();
+
+            this.Left = workingArea.Left;
+            this.Top = workingArea.Top;
+            this.Width = workingArea.Width;
+            this.Height = workingArea.Height;
+
+            this.WindowState = System.Windows.WindowState.Normal;
+            this.WindowState = System.Windows.WindowState.Maximized;
+
+            var mainMatrix = GetDpiScaling(Application.Current.MainWindow);
+            var settingsMatrix = GetDpiScaling(_settingsWindow);
+            string info = string.Format("{0},{1}-{2}x{3}",
+                    workingArea.Left, workingArea.Top, workingArea.Width, workingArea.Height)
+                + string.Format(" mdpi:{0}x{1}, sdpi:{2}x{3}",
+                    mainMatrix.M11, mainMatrix.M22, settingsMatrix.M11, settingsMatrix.M22);
+
+            this._settingsWindow.DisplayWorkArea(info);
         }
         private void RedisplayCrosshair()
         {
@@ -76,31 +103,13 @@ namespace Virtual_Crosshair
         }
         private void SetCurrentLocation()
         {
-            Rectangle workingArea = GetMonitorWorkingArea();
-
             double horizontalOffset = _settingsModel.HorizontalOffset;
             double verticalOffset = _settingsModel.VerticalOffset;
 
-            this.Left = workingArea.Left;
-            this.Top = workingArea.Top;
-            this.Width = workingArea.Width;
-            this.Height = workingArea.Height;
 
-            var mainMatrix = GetDpiScaling(Application.Current.MainWindow);
-            var settingsMatrix = GetDpiScaling(_settingsWindow);
-            string info = string.Format("{0},{1}-{2}x{3}",
-                    workingArea.Left, workingArea.Top, workingArea.Width, workingArea.Height)
-                + string.Format(" mdpi:{0}x{1}, sdpi:{2}x{3}",
-                    mainMatrix.M11, mainMatrix.M22, settingsMatrix.M11, settingsMatrix.M22);
-
-            this._settingsWindow.DisplayWorkArea(info);
-
-            this.WindowState = System.Windows.WindowState.Normal;
-            this.WindowState = System.Windows.WindowState.Maximized;
-
-            double imgLeft = ((workingArea.Width - imgCrosshair.Width) / 2.0) + horizontalOffset;
+            double imgLeft = ((this.Width - imgCrosshair.Width) / 2.0) + horizontalOffset;
             Canvas.SetLeft(imgCrosshair, imgLeft);
-            double imgTop = ((workingArea.Height - imgCrosshair.Height) / 2.0) - verticalOffset;
+            double imgTop = ((this.Height - imgCrosshair.Height) / 2.0) - verticalOffset;
             Canvas.SetTop(imgCrosshair, imgTop);
         }
         private Matrix GetDpiScaling(UIElement elent)
@@ -114,6 +123,7 @@ namespace Virtual_Crosshair
             return mtrix;
         }
         private void SetCurrentImage()
+
         {
             string imageName = _settingsModel.ImageName;
             if (string.IsNullOrEmpty(imageName)) { return; }
