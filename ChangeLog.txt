@@ -14,3 +14,6 @@
  New redblue.png (for testing)
  Set main windows to normal then maximized, to fix centering issue
  Bump version to 1.0.1.0
+
+2016-03-18, Perry
+ Add horizontal & vertical scaling dropdowns

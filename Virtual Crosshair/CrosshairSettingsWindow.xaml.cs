@@ -76,6 +76,26 @@ namespace Virtual_Crosshair
         {
             Properties.Settings.Default.Reload();
             this.HorizontalOffsetCtl.Value = Properties.Settings.Default.HorizontalOffset;
+            // Find lowest horizontal scale holding current offset
+            foreach (ComboBoxItem item in cboHorizScale.Items)
+            {
+                int value = int.Parse(item.Content.ToString());
+                if (value >= this.HorizontalOffsetCtl.Value)
+                {
+                    cboHorizScale.SelectedItem = item;
+                    break;
+                }
+            }
+            // Find lowest vertical scale holding current offset
+            foreach (ComboBoxItem item in cboVertScale.Items)
+            {
+                int value = int.Parse(item.Content.ToString());
+                if (value >= this.VerticalOffsetCtl.Value)
+                {
+                    cboVertScale.SelectedItem = item;
+                    break;
+                }
+            }
             this.VerticalOffsetCtl.Value = Properties.Settings.Default.VerticalOffset;
             this.SizeCtl.Value = Properties.Settings.Default.Scaling;
             this.ImageChoiceCtl.SelectedIndex = Properties.Settings.Default.SelectedImageIndex;
@@ -175,6 +195,24 @@ namespace Virtual_Crosshair
             FireSettingsChangedEvent();
         }
 
+        private void cboHorizScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            double offset = HorizontalOffsetCtl.Value;
+            ComboBoxItem item = (cboHorizScale.SelectedItem as ComboBoxItem);
+            int scale = int.Parse(item.Content.ToString());
+            HorizontalOffsetCtl.Minimum = -scale;
+            HorizontalOffsetCtl.Maximum = scale;
+        }
+
+        private void cboVertScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            double offset = VerticalOffsetCtl.Value;
+            ComboBoxItem item = (cboVertScale.SelectedItem as ComboBoxItem);
+            int scale = int.Parse(item.Content.ToString());
+            VerticalOffsetCtl.Minimum = -scale;
+            VerticalOffsetCtl.Maximum = scale;
+        }
+
         private void FireSettingsChangedEvent()
         {
             if (SettingsChanged != null)
@@ -189,6 +227,5 @@ namespace Virtual_Crosshair
             SaveWindowSettings();
             Application.Current.Shutdown();
         }
-
     }
 }
