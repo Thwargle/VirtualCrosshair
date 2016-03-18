@@ -75,28 +75,30 @@ namespace Virtual_Crosshair
         private void LoadDefaultValues()
         {
             Properties.Settings.Default.Reload();
-            this.HorizontalOffsetCtl.Value = Properties.Settings.Default.HorizontalOffset;
+            int hOffset = Properties.Settings.Default.HorizontalOffset;
+            this.HorizontalOffsetCtl.Value = hOffset;
             // Find lowest horizontal scale holding current offset
             foreach (ComboBoxItem item in cboHorizScale.Items)
             {
                 int value = int.Parse(item.Content.ToString());
-                if (value >= this.HorizontalOffsetCtl.Value)
+                if (hOffset >= -value && hOffset <= value)
                 {
                     cboHorizScale.SelectedItem = item;
                     break;
                 }
             }
+            int vOffset = Properties.Settings.Default.VerticalOffset;
+            this.VerticalOffsetCtl.Value = vOffset;
             // Find lowest vertical scale holding current offset
             foreach (ComboBoxItem item in cboVertScale.Items)
             {
                 int value = int.Parse(item.Content.ToString());
-                if (value >= this.VerticalOffsetCtl.Value)
+                if (vOffset >= -value && vOffset <= value)
                 {
                     cboVertScale.SelectedItem = item;
                     break;
                 }
             }
-            this.VerticalOffsetCtl.Value = Properties.Settings.Default.VerticalOffset;
             this.SizeCtl.Value = Properties.Settings.Default.Scaling;
             this.ImageChoiceCtl.SelectedIndex = Properties.Settings.Default.SelectedImageIndex;
             this.MonitorChoiceCtl.SelectedIndex = Properties.Settings.Default.SelectedMonitorIndex;

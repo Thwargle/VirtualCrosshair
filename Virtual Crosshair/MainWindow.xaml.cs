@@ -81,12 +81,18 @@ namespace Virtual_Crosshair
             double horizontalOffset = _settingsModel.HorizontalOffset;
             double verticalOffset = _settingsModel.VerticalOffset;
 
-            this.Left = workingArea.Left + horizontalOffset;
-            this.Top = workingArea.Top - verticalOffset;
+            this.Left = workingArea.Left;
+            this.Top = workingArea.Top;
             this.Width = workingArea.Width;
             this.Height = workingArea.Height;
             this.WindowState = System.Windows.WindowState.Normal;
             this.WindowState = System.Windows.WindowState.Maximized;
+
+            double imgLeft = ((workingArea.Width - imgCrosshair.Width) / 2.0) + horizontalOffset;
+            Canvas.SetLeft(imgCrosshair, imgLeft);
+            double imgTop = ((workingArea.Height - imgCrosshair.Height) / 2.0) - verticalOffset;
+            Canvas.SetTop(imgCrosshair, imgTop);
+
         }
         private void SetCurrentImage()
         {
