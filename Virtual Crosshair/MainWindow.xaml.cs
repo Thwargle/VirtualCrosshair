@@ -86,9 +86,12 @@ namespace Virtual_Crosshair
             this.Width = workingArea.Width;
             this.Height = workingArea.Height;
 
-            double mainDpi = GetDpiScaling(Application.Current.MainWindow);
-            double settingsDpi = GetDpiScaling(_settingsWindow);
-            string info = string.Format("{0},{1} - {2}x{3}, mdpi:{4}, sdpi:{5}", workingArea.Left, workingArea.Top, workingArea.Width, workingArea.Height, mainDpi, settingsDpi);
+            var mainMatrix = GetDpiScaling(Application.Current.MainWindow);
+            var settingsMatrix = GetDpiScaling(_settingsWindow);
+            string info = string.Format("{0},{1}-{2}x{3}",
+                    workingArea.Left, workingArea.Top, workingArea.Width, workingArea.Height)
+                + string.Format(" mdpi:{0}x{1}, sdpi:{2}x{3}",
+                    mainMatrix.M11, mainMatrix.M22, settingsMatrix.M11, settingsMatrix.M22);
 
             this._settingsWindow.DisplayWorkArea(info);
 
@@ -100,11 +103,15 @@ namespace Virtual_Crosshair
             double imgTop = ((workingArea.Height - imgCrosshair.Height) / 2.0) - verticalOffset;
             Canvas.SetTop(imgCrosshair, imgTop);
         }
-        private double GetDpiScaling(UIElement elent)
+        private Matrix GetDpiScaling(UIElement elent)
         {
+            Matrix mtrix = new Matrix();
             PresentationSource source = PresentationSource.FromVisual(elent);
-            double dpiScaling = (source != null && source.CompositionTarget != null ? source.CompositionTarget.TransformFromDevice.M11 : 1);
-            return dpiScaling;
+            if (source != null && source.CompositionTarget != null)
+            {
+                mtrix = source.CompositionTarget.TransformFromDevice;
+            }
+            return mtrix;
         }
         private void SetCurrentImage()
         {
